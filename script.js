@@ -19,6 +19,18 @@ $(function () {
     // time-block containing the button that was clicked? How might the id be
     // useful when saving the description in local storage?
     //
+   document.getElementById('mainDiv').addEventListener("click", function(event){
+
+    if(event.target.matches("button")){
+        console.log("ok")
+    }
+
+
+
+
+
+   })
+    
     // TODO: Add code to apply the past, present, or future class to each time
     // block by comparing the id to the current hour. HINTS: How can the id
     // attribute of each time-block be used to conditionally add or remove the
@@ -57,7 +69,7 @@ $(function () {
   
   
 
-//   loop through all the divs, get the data time, if data time at div index is less than dayjs now, change class to past, if its equal change to present, if its more, change to future
+
 
 
  
