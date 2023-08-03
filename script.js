@@ -5,7 +5,7 @@ let currentHour = dayjs().format("HH");
 
 
 
-console.log(currentHour)
+
 
 
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
@@ -22,7 +22,12 @@ $(function () {
    document.getElementById('mainDiv').addEventListener("click", function(event){
 
     if(event.target.matches("button")){
-        console.log("ok")
+        let parentDiv = event.target.parentElement
+        let dataTime = parentDiv.dataset.time
+        let userInput = event.target.previousElementSibling.value;
+        
+
+        localStorage.setItem("hour" + dataTime, userInput)
     }
 
 
