@@ -15,7 +15,7 @@ $(function () {
    document.getElementById('mainDiv').addEventListener("click", function(event){
     // target is set to button so we can listen for a button click
     if(event.target.matches("button")){
-        // parent div is the parent element of the event target (button clicked)
+        // parent div is the parent element of the targeted event  (button clicked)
         let parentDiv = event.target.parentElement
         // dataTime is the value of the data-time of the parent element in the html
         let dataTime = parentDiv.dataset.time
@@ -40,7 +40,7 @@ $(function () {
         //dataTime set to the dataset time value at the hourDiv where we currently are in the loop
            let dataTime = hourDiv.dataset.time;
 
-        //sets savedText to what is stored in local storage  
+        //gets savedText to what is stored in local storage  
            let savedText = localStorage.getItem("hour " + dataTime)
 
             // if there is text saved at the selected dataTime value, we set the text area value to the text saved in local storage
@@ -56,7 +56,7 @@ $(function () {
     function checkTime(){
             // loops through hourDivs, the div children of the main div
         for (let i = 0; i < hourDivs.length; i++) {
-            // hour div is set it equal to hourDivs where we are in the index
+            // hour div is set  equal to hourDivs where we are in the index
             let hourDiv = hourDivs[i]
             // currentHour is a globally scoped variable which is equal to dayjs hour in 24 hour clock format, if hourDivs data time at the current index is less than current hour, make the class past and remove present/future class 
             if(parseInt(hourDivs[i].dataset.time) < parseInt(currentHour)){
@@ -78,7 +78,7 @@ $(function () {
     }
     checkTime()
    
-    // timeEl is a globally scoped value tied to the p tag in the html doc. this sets the text content of that p tag to now ( dayjs() ) and the format we want is short month (MMM), 2 digit day (DD), 4 digit year(YYYY)
+    // timeEl is a globally scoped variable tied to the p tag in the html doc. this sets the text content of that p tag to now ( dayjs() ) and the format we want is short month (MMM), 2 digit day (DD), 4 digit year(YYYY)
         timeEl.textContent = dayjs().format("MMM, DD YYYY")
   });
   
