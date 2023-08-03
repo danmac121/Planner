@@ -8,26 +8,22 @@ let currentHour = dayjs().format("HH");
 
 
 
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-$(function () {
-    // TODO: Add a listener for click events on the save button. This code should
-    // use the id in the containing time-block as a key to save the user input in
-    // local storage. HINT: What does `this` reference in the click listener
-    // function? How can DOM traversal be used to get the "hour-x" id of the
-    // time-block containing the button that was clicked? How might the id be
-    // useful when saving the description in local storage?
-    //
-   document.getElementById('mainDiv').addEventListener("click", function(event){
 
+$(function () {
+
+    // event listener is set to the main div so we can listen for a click on the children we select (event target)
+   document.getElementById('mainDiv').addEventListener("click", function(event){
+    // target is set to button so we can listen for a button click
     if(event.target.matches("button")){
+        // parent div is the parent element of the event target (button clicked)
         let parentDiv = event.target.parentElement
+        // dataTime is the value of the data-time of the parent element in the html
         let dataTime = parentDiv.dataset.time
+        // userInput is the value of the event target's (button clicked) previous sibling. previous sibling because the text area comes immediately before the buttons in our html
         let userInput = event.target.previousElementSibling.value;
         
-
-        localStorage.setItem("hour" + dataTime, userInput)
+        // we add to local storage the dataTime and userInput for the event target
+        localStorage.setItem("hour " + dataTime, userInput)
     }
 
 
@@ -35,27 +31,45 @@ $(function () {
 
 
    })
-    
-    // TODO: Add code to apply the past, present, or future class to each time
-    // block by comparing the id to the current hour. HINTS: How can the id
-    // attribute of each time-block be used to conditionally add or remove the
-    // past, present, and future classes? How can Day.js be used to get the
-    // current hour in 24-hour time?
-    //
-    function checkTime(){
-  
+    function retrieve(){
+        // loops through hourDivs, the div children of main div 
         for (let i = 0; i < hourDivs.length; i++) {
+            // hour div is set it equal to hourDivs where we are in the index
+           let hourDiv = hourDivs[i];
+
+        //dataTime set to the dataset time value at the hourDiv where we currently are in the loop
+           let dataTime = hourDiv.dataset.time;
+
+        //sets savedText to what is stored in local storage  
+           let savedText = localStorage.getItem("hour " + dataTime)
+
+            // if there is text saved at the selected dataTime value, we set the text area value to the text saved in local storage
+           if (savedText){
+            let textArea = hourDiv.querySelector("textarea")
+            textArea.value = savedText;
+           }
+        }
+        
+    }
+    retrieve();
+    
+    function checkTime(){
+            // loops through hourDivs, the div children of the main div
+        for (let i = 0; i < hourDivs.length; i++) {
+            // hour div is set it equal to hourDivs where we are in the index
             let hourDiv = hourDivs[i]
-            
+            // currentHour is a globally scoped variable which is equal to dayjs hour in 24 hour clock format, if hourDivs data time at the current index is less than current hour, make the class past and remove present/future class 
             if(parseInt(hourDivs[i].dataset.time) < parseInt(currentHour)){
                 hourDiv.classList.remove("present", "future");
                 hourDiv.classList.add("past");
             }
+            // if the previous statement did not apply to the hourDivs at the current index, we check if it is equal to currentHour and apply/remove classes accordingly
             else if(parseInt(hourDivs[i].dataset.time) === parseInt(currentHour)){
                 hourDiv.classList.remove("past", "future");
                 hourDiv.classList.add("present");
                 
               }
+            //   if neither of the previous statements apply to hourDivs at current index, we know it must be the future and apply/remove classes accordingly
             else {
                 hourDiv.classList.remove("past", "present");
                 hourDiv.classList.add("future");
@@ -64,11 +78,7 @@ $(function () {
     }
     checkTime()
    
-    // TODO: Add code to get any user input that was saved in localStorage and set
-    // the values of the corresponding textarea elements. HINT: How can the id
-    // attribute of each time-block be used to do this?
-    //
-    // TODO: Add code to display the current date in the header of the page.
+    // timeEl is a globally scoped value tied to the p tag in the html doc. this sets the text content of that p tag to now ( dayjs() ) and the format we want is short month (MMM), 2 digit day (DD), 4 digit year(YYYY)
         timeEl.textContent = dayjs().format("MMM, DD YYYY")
   });
   
